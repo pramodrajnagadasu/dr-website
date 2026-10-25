@@ -26,3 +26,6 @@ Thumbs.db
 
 # Old nested copy of the site - kept locally, not versioned
 /dr-website/
+
+# Python bytecode
+__pycache__/
