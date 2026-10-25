@@ -1,0 +1,12 @@
+# Prefer index.php as the directory index
+DirectoryIndex index.php index.html
+
+# Force HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Block the raw php.ini / config-ish files if they're ever accidentally present
+<FilesMatch "^(php\.ini|\.user\.ini)$">
+    Require all denied
+</FilesMatch>

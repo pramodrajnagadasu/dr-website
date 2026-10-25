@@ -1,0 +1,12 @@
+<?php
+// ─────────────────────────────────────────────
+//  SMTP credentials (local/dev)
+//  Copy this file to config-smtp.local.php and fill in the app password.
+//  config-smtp.local.php itself is gitignored and must never be committed.
+// ─────────────────────────────────────────────
+
+define('SMTP_HOST',     'smtp.gmail.com');
+define('SMTP_PORT',     587);
+define('SMTP_USERNAME', 'pnbabu@gmail.com');
+define('SMTP_PASSWORD', ''); // Gmail App Password — https://myaccount.google.com/apppasswords
+define('SMTP_SECURE',   'tls');

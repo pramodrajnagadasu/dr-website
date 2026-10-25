@@ -1,0 +1,82 @@
+<?php
+session_start();
+require_once 'db.php';
+require_once 'auth.php';
+requireDoctor();
+
+$patients     = getAllPatients();
+$appointments = getAllAppointments();
+
+$apptsByPatient = [];
+foreach ($appointments as $a) {
+    $apptsByPatient[$a['patient_id']][] = $a;
+}
+foreach ($apptsByPatient as &$appts) {
+    usort($appts, fn($a, $b) => strcmp($b['created_at'], $a['created_at']));
+}
+unset($appts);
+
+$todayTs = mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'));
+
+function apptTs(array $a): int {
+    [$d, $m, $y] = explode('-', $a['appointment_date']);
+    return mktime(0, 0, 0, (int) $m, (int) $d, (int) $y);
+}
+
+// Strictly future open bookings (tomorrow or later). Today's and past-open backlog
+// live on the main dashboard instead; closed/cancelled live on Closed Bookings.
+$isFutureOpen = fn($a) => !in_array($a['status'] ?? 'confirmed', ['cancelled', 'closed'], true)
+    && apptTs($a) > $todayTs;
+
+$visiblePatients = [];
+foreach ($patients as $p) {
+    $filtered = array_values(array_filter($apptsByPatient[$p['id']] ?? [], $isFutureOpen));
+    if (empty($filtered)) continue;
+    $visiblePatients[] = [$p, $filtered];
+}
+
+$emptyIcon    = 'fa-hourglass-half';
+$emptyMessage = 'No upcoming bookings for tomorrow or later.';
+$showActions  = true;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upcoming Bookings — Dr. Prasanna Kumar K</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="portal.css" />
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="portal-bar">
+  <div class="brand">
+    <i class="fas fa-stethoscope"></i>
+    Dr. Prasanna Kumar K &mdash; Admin
+  </div>
+  <div class="bar-right">
+    <a href="admin-dashboard.php" class="logout-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+  </div>
+</div>
+
+<div class="portal-wrap">
+
+  <!-- Page title -->
+  <div class="page-title">
+    <h2>Upcoming Bookings</h2>
+    <p>Open appointments for tomorrow or later</p>
+  </div>
+
+  <?php include 'admin-patient-list.php'; ?>
+
+</div><!-- /portal-wrap -->
+
+<?php include 'admin-appointment-modals.php'; ?>
+
+<script src="admin-appointments.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Local-only credentials — never commit
+config-smtp.local.php
+config-db.local.php
+config-razorpay.local.php
+
+# Storage is MySQL now — these should no longer be written, but ignore
+# defensively in case anything ever falls back to file storage again.
+data/*.json
+data/*.log
+
+# Uploaded patient files
+uploads/*
+!uploads/.htaccess
+
+# PHP session files
+sessions/*
+!sessions/.htaccess
+
+# IDE / tooling
+.idea/
+.claude/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Old nested copy of the site - kept locally, not versioned
+/dr-website/

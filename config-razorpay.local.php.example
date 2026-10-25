@@ -1,0 +1,15 @@
+<?php
+// ─────────────────────────────────────────────
+//  Razorpay credentials (local/dev)
+//  Copy this file to config-razorpay.local.php and fill in real values.
+//  config-razorpay.local.php itself is gitignored and must never be committed.
+//
+//  Get test-mode keys from: Razorpay Dashboard → Settings → API Keys
+//  Get the webhook secret from: Razorpay Dashboard → Settings → Webhooks
+//  (create a webhook pointing at https://yourdomain.com/razorpay-webhook.php,
+//  subscribed to the "payment.captured" event, and use the secret you set there)
+// ─────────────────────────────────────────────
+
+define('RAZORPAY_KEY_ID', '');         // e.g. rzp_test_xxxxxxxxxxxx
+define('RAZORPAY_KEY_SECRET', '');
+define('RAZORPAY_WEBHOOK_SECRET', '');

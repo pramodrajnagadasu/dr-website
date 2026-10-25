@@ -1,0 +1,18 @@
+<?php
+// ─────────────────────────────────────────────
+//  MySQL connection settings
+//  Copy this file to config-db.local.php and fill in real values.
+//  config-db.local.php itself is gitignored and must never be committed.
+//
+//  Production (GoDaddy) values — see DEPLOYMENT.md:
+//    DB_HOST: 'localhost'
+//    DB_NAME: '<cpanel-account-prefix>_doctor_prasanna_application'
+//    DB_USER: '<cpanel-account-prefix>_admin' (cPanel prefixes usernames too)
+//    DB_PASS: from cPanel > MySQL Databases
+// ─────────────────────────────────────────────
+
+define('DB_HOST', '127.0.0.1');
+define('DB_PORT', 3306);
+define('DB_NAME', 'doctor_prasanna_application'); // production uses this same name, cPanel-prefixed — see DEPLOYMENT.md
+define('DB_USER', 'admin');
+define('DB_PASS', '');
